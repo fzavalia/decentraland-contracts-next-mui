@@ -48,7 +48,7 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
         <nav style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", gap: "1rem" }}>
           {networks.map((network) => {
             return (
-              <div>
+              <div key={network}>
                 <Button component={NextLink} href={`/${network}`}>
                   {network}
                 </Button>
