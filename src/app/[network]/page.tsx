@@ -5,36 +5,46 @@ import { Button, Container, Link, Paper, Table, TableBody, TableCell, TableConta
 import classNames from "classnames";
 import styles from "./page.module.css";
 
-export type NetworkContracts = Record<string, string>;
+enum NetworkName {
+  Mainnet = "mainnet",
+  Goerli = "goerli",
+  Sepolia = "sepolia",
+  Matic = "matic",
+  Mumbai = "mumbai",
+}
 
-export type Contracts = Record<string, NetworkContracts>;
+type NetworkContracts = Record<string, string>;
 
-export type NetworkPageProps = {
+type Contracts = Record<NetworkName, NetworkContracts>;
+
+type NetworkPageProps = {
   params: {
     network: string;
   };
 };
 
-export const explorers: Record<string, string> = {
-  mainnet: "https://etherscan.io",
-  goerli: "https://goerli.etherscan.io",
-  sepolia: "https://sepolia.etherscan.io",
-  matic: "https://polygonscan.com",
-  mumbai: "https://mumbai.polygonscan.com",
+const networkNames = Object.values(NetworkName);
+
+const networkExplorers: Record<NetworkName, string> = {
+  [NetworkName.Mainnet]: "https://etherscan.io",
+  [NetworkName.Goerli]: "https://goerli.etherscan.io",
+  [NetworkName.Sepolia]: "https://sepolia.etherscan.io",
+  [NetworkName.Matic]: "https://polygonscan.com",
+  [NetworkName.Mumbai]: "https://mumbai.polygonscan.com",
 };
 
 export default async function NetworkPage({ params }: NetworkPageProps) {
-  const { network: currentNetwork } = params;
+  if (!(networkNames as string[]).includes(params.network)) {
+    notFound();
+  }
 
+  const currNetworkName = params.network as NetworkName;
   const contracts = await fetchContracts();
-
-  const networkContracts: Record<string, string> | undefined = contracts[currentNetwork];
+  const networkContracts: Record<string, string> | undefined = contracts[currNetworkName];
 
   if (!networkContracts) {
     notFound();
   }
-
-  const networks = Object.keys(contracts);
 
   const rows = Object.entries(networkContracts).map(([name, address]) => ({ name, address }));
 
@@ -45,13 +55,13 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
           <Image src="/logo.png" alt="logo" width={100} height={100} priority />
         </div>
         <nav style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", gap: "1rem", flexWrap: "wrap" }}>
-          {networks.map((network) => {
+          {networkNames.map((networkName) => {
             return (
-              <div key={network}>
-                <Button component={NextLink} href={`/${network}`}>
-                  {network}
+              <div key={networkName}>
+                <Button component={NextLink} href={`/${networkName}`}>
+                  {networkName}
                 </Button>
-                <div className={classNames(styles.dot, currentNetwork === network && styles.enabled)} />
+                <div className={classNames(styles.dot, networkName === currNetworkName && styles.enabled)} />
               </div>
             );
           })}
@@ -67,7 +77,7 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
                     {row.name}
                   </TableCell>
                   <TableCell sx={{ fontSize: "1rem", fontFamily: "monospace" }} align="right">
-                    <Link href={`${explorers[currentNetwork]}/address/${row.address}`}>{row.address}</Link>
+                    <Link href={`${networkExplorers[currNetworkName]}/address/${row.address}`}>{row.address}</Link>
                   </TableCell>
                 </TableRow>
               ))}
@@ -80,14 +90,5 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
 }
 
 async function fetchContracts(): Promise<Contracts> {
-  const response = await fetch("https://contracts.decentraland.org/addresses.json");
-
-  const contracts: Contracts = await response.json();
-
-  const wl = new Set(["mainnet", "goerli", "sepolia", "matic", "mumbai"]);
-
-  return Object.entries(contracts).reduce(
-    (acc, [network, contracts]) => (wl.has(network) ? { ...acc, [network]: contracts } : acc),
-    {} as Contracts
-  );
+  return (await fetch("https://contracts.decentraland.org/addresses.json")).json();
 }
