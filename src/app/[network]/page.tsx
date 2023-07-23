@@ -1,5 +1,6 @@
-import { explorerLinks, fetchContracts } from "@/utils/fetchContracts";
 import { notFound } from "next/navigation";
+import Image from "next/image";
+import NextLink from "next/link";
 import {
   Button,
   Container,
@@ -9,14 +10,13 @@ import {
   TableBody,
   TableCell,
   TableContainer,
-  TableHead,
   TableRow,
 } from "@mui/material";
-import logo from "./img/logo.png";
-import Image from "next/image";
-import NextLink from "next/link";
-import styles from "./page.module.css";
 import classNames from "classnames";
+import { explorerLinks, fetchContracts } from "@/utils/fetchContracts";
+import logo from "./img/logo.png";
+import styles from "./page.module.css";
+
 
 export type NetworkPageProps = {
   params: {
