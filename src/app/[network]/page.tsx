@@ -61,12 +61,6 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
       <main>
         <TableContainer component={Paper}>
           <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>Contract</TableCell>
-                <TableCell align="right">Address</TableCell>
-              </TableRow>
-            </TableHead>
             <TableBody>
               {rows.map((row) => (
                 <TableRow key={row.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
