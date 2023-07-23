@@ -1,22 +1,11 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import NextLink from "next/link";
-import {
-  Button,
-  Container,
-  Link,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableRow,
-} from "@mui/material";
+import { Button, Container, Link, Paper, Table, TableBody, TableCell, TableContainer, TableRow } from "@mui/material";
 import classNames from "classnames";
 import { explorerLinks, fetchContracts } from "@/utils/fetchContracts";
 import logo from "./img/logo.png";
 import styles from "./page.module.css";
-
 
 export type NetworkPageProps = {
   params: {
