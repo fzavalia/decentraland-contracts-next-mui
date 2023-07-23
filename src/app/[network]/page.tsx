@@ -45,7 +45,7 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
         <div style={{ display: "flex", justifyContent: "center", marginTop: "2rem", marginBottom: "2rem" }}>
           <Image src={logo} alt="logo" width={100} height={100} priority />
         </div>
-        <nav style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", gap: "1rem" }}>
+        <nav style={{ display: "flex", justifyContent: "center", marginBottom: "2rem", gap: "1rem", flexWrap: "wrap" }}>
           {networks.map((network) => {
             return (
               <div key={network}>
