@@ -49,14 +49,14 @@ export default async function NetworkPage({ params }: NetworkPageProps) {
       </header>
       <main>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableBody>
+          <Table aria-label="simple table">
+            <TableBody sx={{ fontSize: "2rem" }}>
               {rows.map((row) => (
                 <TableRow key={row.name} sx={{ "&:last-child td, &:last-child th": { border: 0 } }}>
-                  <TableCell component="th" scope="row">
+                  <TableCell component="th" scope="row" sx={{ fontSize: "1rem" }}>
                     {row.name}
                   </TableCell>
-                  <TableCell sx={{ fontFamily: "monospace" }} align="right">
+                  <TableCell sx={{ fontSize: "1rem", fontFamily: "monospace" }} align="right">
                     <Link href={`${explorerLinks[currentNetwork]}/address/${row.address}`}>{row.address}</Link>
                   </TableCell>
                 </TableRow>
